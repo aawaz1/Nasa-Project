@@ -12,7 +12,7 @@ jobs:
   build:
     strategy:
       matrix:
-        node-version: [14.x,18.x]  # Matrix for testing Node.js v18.x versions
+        node-version: [18.x]  # Matrix for testing Node.js v18.x versions
 
     runs-on: ubuntu-latest
 
