@@ -10,21 +10,27 @@ on:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        node-version: [14.x,18.x]  # Matrix for testing Node.js v18.x versions
+
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2  # Checks out your code
 
-      - name: Set up Node.js version 18
-        uses: actions/setup-node@v3  # Uses latest stable version of setup-node
+      - name: Set up Node.js version  ${{ matrix.node-version }}
+        uses: actions/setup-node@v3  # Uses the latest stable version of setup-node
         with:
-          node-version: '18'  # Specify the Node.js version
+          node-version: ${{ matrix.node-version }}  # Uses version from matrix
 
       - name: Install dependencies
         run: npm install  # Installs all dependencies from package.json
 
       - name: Build client
-        run: npm run build --prefix frontend  # Builds the project in the 'frontend' directory
+        run: npm run build --prefix frontend  # Adjust the path if necessary to your actual folder
 
-    
+      - name: Run tests
+        run: npm test  # Make sure there's a test script in package.json
+
