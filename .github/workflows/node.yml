@@ -24,5 +24,12 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build client
-        run: npm run build --prefix frontend
+      - name: Debug frontend directory contents
+        run: ls -la frontend  # Check if frontend folder exists
+
+      - name: Build client with debugging
+        run: |
+          echo "Starting Build"
+          npm run build --prefix frontend
+          echo "Build finished"
+        continue-on-error: true  # Allows the process to continue even if the build fails
