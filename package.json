@@ -8,8 +8,8 @@
     "install-client": "npm install --prefix client",
     "install": "npm run install-server && npm run install-client",
     "server": "npm run watch --prefix server",
-    "client": "npm start --prefix client",
-    "watch": "npm run server & npm run client",
+    "client": "npm start --prefix frontend",
+    "watch": "npm run server & npm run frontend",
     "deploy": "npm run build --prefix frontend && npm start --prefix server",
     "deploy-cluster": "npm run build --prefix frontend && npm run cluster --prefix server",
     "test": "npm test --prefix server && npm test --prefix client"
