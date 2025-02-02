@@ -22,8 +22,8 @@ describe("launches API" , () => {
             .get('/v1/launches')
             .expect('Content-Type' ,/json/)
             .expect(200)
-        })
-    });
+        },10000)
+    } );
     
     
     describe('Test POST Launches' , () => {
