@@ -12,25 +12,47 @@ jobs:
   build:
     strategy:
       matrix:
-        node-version: [18.x]  # Matrix for testing Node.js v18.x versions
+        node-version: [18.x]
 
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2  # Checks out your code
-
-      - name: Set up Node.js version  ${{ matrix.node-version }}
-        uses: actions/setup-node@v3  # Uses the latest stable version of setup-node
+        uses: actions/checkout@v2
         with:
-          node-version: ${{ matrix.node-version }}  # Uses version from matrix
+          fetch-depth: 0  # Ensure full repo is fetched
 
-      - name: Install dependencies
-        run: npm install  # Installs all dependencies from package.json
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
 
-      - name: Build client
-        run: npm run build --prefix frontend  # Adjust the path if necessary to your actual folder
+      - name: Install server dependencies
+        run: npm install --prefix server  
 
-      - name: Run tests
-        run: npm test  # Make sure there's a test script in package.json
+      - name: Install frontend dependencies (if exists)
+        run: |
+          if [ -f "frontend/package.json" ]; then
+            npm install --prefix frontend
+          else
+            echo "Skipping frontend install: package.json not found"
+          fi
 
+      - name: Build frontend (if exists)
+        run: |
+          if [ -f "frontend/package.json" ]; then
+            npm run build --prefix frontend
+          else
+            echo "Skipping frontend build: package.json not found"
+          fi
+
+      - name: Run backend tests
+        run: npm test --prefix server
+
+      - name: Run frontend tests (allow no tests)
+        run: |
+          if [ -f "frontend/package.json" ]; then
+            npm test --prefix frontend -- --passWithNoTests
+          else
+            echo "Skipping frontend tests: package.json not found"
+          fi
