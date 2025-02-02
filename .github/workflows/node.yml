@@ -13,28 +13,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Use Node.js version 18
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Debug frontend directory contents
-        run: ls -la frontend  # Check if frontend folder exists
-
-      - name: Show npm version and node version
-        run: |
-          npm --version
-          node --version
-
-      - name: Build client with more detailed output
-        run: |
-          echo "Starting Build"
-          npm run build --prefix frontend --verbose  # Using --verbose to capture full output
-          echo "Build finished"
-        continue-on-error: true  # Allows the process to continue even if the build fails
+        - uses: actions/checkout@v3
+        - name: Use Node.js version 20
+          uses: actions/setup-node@v3
+          with:
+            node-version: '20'
+        - run: npm install
+        - run: npm run build --prefix frontend
